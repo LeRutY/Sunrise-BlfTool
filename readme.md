@@ -1,4 +1,4 @@
-# Sunrise Blf Tool
+# Sunrise BLF Tool [![Build status](https://ci.appveyor.com/api/projects/status/uq8ueptsbwwkegt2?svg=true)](https://ci.appveyor.com/project/craftycodie/sunrise-blftool)
 This tool allows you to edit blf files used by Halo, which include data like network configuration and matchmaking playlists.
 
 ## How To Use
