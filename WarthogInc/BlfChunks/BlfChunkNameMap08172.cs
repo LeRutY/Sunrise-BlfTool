@@ -1,22 +1,15 @@
 ﻿using Sunrise.BlfTool;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using WarthogInc.BlfChunks;
 
 namespace SunriseBlfTool.BlfChunks
 {
-    public class BlfChunkNameMap
+    public class BlfChunkNameMap08172 : AbstractBlfChunkNameMap
     {
-        public static BlfChunkNameMap singleton = new BlfChunkNameMap();
+        public static BlfChunkNameMap08172 singleton = new BlfChunkNameMap08172();
 
-        private Dictionary<string, Type> chunkTypes = new Dictionary<string, Type>();
-
-        private BlfChunkNameMap()
+        public BlfChunkNameMap08172()
         {
             RegisterChunks();
         }
@@ -25,13 +18,11 @@ namespace SunriseBlfTool.BlfChunks
         {
             RegisterChunk<StartOfFile>();
             RegisterChunk<EndOfFile>();
-            RegisterChunk<HopperConfigurationTable>();
-            RegisterChunk<MatchmakingHopperDescriptions>();
+            RegisterChunk<HopperConfigurationTable8>();
+            RegisterChunk<MatchmakingHopperDescriptions2>();
             RegisterChunk<UserBanhammer>();
             RegisterChunk<Author>();
             RegisterChunk<ServiceRecordIdentity>();
-            RegisterChunk<MessageOfTheDayPopup>();
-            RegisterChunk<NagMessage>();
             RegisterChunk<GameSet>();
             RegisterChunk<Manifest>();
             RegisterChunk<MatchmakingTips>();
@@ -44,20 +35,15 @@ namespace SunriseBlfTool.BlfChunks
             RegisterChunk<ContentHeader>();
             RegisterChunk<FileQueue>();
             RegisterChunk<UserPlayerData>();
-            RegisterChunk<RecentPlayers>(); 
+            RegisterChunk<RecentPlayers>();
             RegisterChunk<MachineNetworkStatistics>();
             RegisterChunk<MessageOfTheDay>();
             RegisterChunk<MultiplayerPlayers>();
         }
 
-        private void RegisterChunk<T>() where T : IBLFChunk, new()
+        public override string GetVersion()
         {
-            chunkTypes.Add(new T().GetName(), typeof(T));
-        }
-
-        public IBLFChunk GetChunk(string chunkName)
-        {
-            return (IBLFChunk)Activator.CreateInstance(chunkTypes[chunkName]);
+            return "08172";
         }
     }
 }
