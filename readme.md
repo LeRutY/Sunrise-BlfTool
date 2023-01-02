@@ -17,15 +17,15 @@ This involves converting human readable JSON files to BLFs which the game can un
 The secondary objectives of this tool are around research. This program provides a good foundation for studying unrelated chunks such as saved content like films and screenshots.
 
 ## Supported Versions
-12070 - Halo 3 Retail
-11902 - Halo 3 Retail (untested)
-11856 - Halo 3 Epsilon
-11855 - Halo 3 Retail (untested)
-11729 - Halo 3 Epsilon
-10015 - Halo 3 Beta (WIP)
-09699 - Halo 3 Beta (WIP)
-08172 - Halo 3 Delta (WIP)
-06481 - Halo 3 Alpha (WIP)
+- 12070 - Halo 3 Retail
+- 11902 - Halo 3 Retail (untested)
+- 11856 - Halo 3 Epsilon
+- 11855 - Halo 3 Retail (untested)
+- 11729 - Halo 3 Epsilon
+- 10015 - Halo 3 Beta (WIP)
+- 09699 - Halo 3 Beta (WIP)
+- 08172 - Halo 3 Delta (WIP)
+- 06481 - Halo 3 Alpha (WIP)
 
 ## What is a BLF?
 BLF is a binary file format used by various halo (blam) games. The BLF format allows you to define blf "chunks", different types of data separated within a file. Each BLF chunk starts with a chunk header, including the 4 character name, length and version of the chunk. Each BLF file starts with a header (_blf) chunk, and ends with an end-of-file (_eof) chunk.
