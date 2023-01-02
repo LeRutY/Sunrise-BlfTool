@@ -12,11 +12,11 @@ using WarthogInc.BlfChunks;
 
 namespace Sunrise.BlfTool
 {
-    class MatchmakingHopperDescriptions1 : IBLFChunk
+    public class GameSet1 : IBLFChunk
     {
         [JsonIgnore]
-        public byte descriptionCount { get { return (byte)descriptions.Length; } }
-        public HopperDescription[] descriptions;
+        public byte gameEntryCount { get { return (byte)gameEntries.Length; } }
+        public GameEntry[] gameEntries;
 
         public ushort GetAuthentication()
         {
@@ -32,7 +32,7 @@ namespace Sunrise.BlfTool
 
         public string GetName()
         {
-            return "mhdf";
+            return "gset";
         }
 
         public ushort GetVersion()
@@ -50,14 +50,28 @@ namespace Sunrise.BlfTool
             var ms = new MemoryStream();
             var hoppersStream = new BitStream<StreamByteStream>(new StreamByteStream(ms));
 
-            hoppersStream.WriteBitswapped<byte>(descriptionCount, 6);
+            var count = gameEntryCount;
 
-            for (int i = 0; i < descriptionCount; i++)
+            if (gameEntries.Length > 63)
             {
-                HopperDescription description = descriptions[i];
-                hoppersStream.WriteBitswapped<ushort>(description.identifier, 16);
-                hoppersStream.WriteBitswapped<byte>(description.type ? (byte)1 : (byte)0, 1);
-                hoppersStream.WriteBitswappedString(description.description, 256, Encoding.UTF8);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Too many game entries! I can only write the first 63 :(");
+                Console.ResetColor();
+                count = 63;
+            }
+
+            hoppersStream.WriteBitswapped(count, 6);
+
+            for (int i = 0; i < count; i++)
+            {
+                GameEntry entry = gameEntries[i];
+
+                hoppersStream.WriteBitswapped(entry.gameEntryWeight, 32);
+                hoppersStream.WriteBitswapped(entry.minimumPlayerCount, 4);
+                hoppersStream.WriteBitswapped(entry.skipAfterVeto ? (byte) 1 : (byte) 0, 1);
+                hoppersStream.WriteBitswapped(entry.mapID, 32);
+                hoppersStream.WriteBitswappedString(entry.gameVariantFileName, 32, Encoding.UTF8);
+                hoppersStream.WriteBitswappedString(entry.mapVariantFileName, 32, Encoding.UTF8);
             }
 
             if (hoppersStream.BitIndex % 8 != 0)
@@ -70,11 +84,15 @@ namespace Sunrise.BlfTool
             }
         }
 
-        public class HopperDescription
+        public class GameEntry
         {
-            public ushort identifier;
-            public bool type;
-            public string description;
+            public int gameEntryWeight;
+            public byte minimumPlayerCount;
+            public bool skipAfterVeto;
+            [JsonIgnore]
+            public int mapID;
+            public string gameVariantFileName;
+            public string mapVariantFileName;
         }
     }
 }
