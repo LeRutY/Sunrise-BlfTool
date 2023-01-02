@@ -5,16 +5,32 @@ This tool allows you to edit blf files used by Halo, which include data like net
 The tool is currently setup to deal with title storage data as a whole, and built for Halo 3.<br>
 The launch arguments are as follows:
 
-`<desired output type (blf or json)> <input folder> <output folder>`
+`<desired output type (blf or json)> <input folder> <output folder> <game version>`
 
 For example<br>
-`blf ".\title storage\json" ".\title stoage\blf"`
+`blf ".\title storage\json" ".\title stoage\blf" 12070`
 
-## How it works
-The tool will convert files to and from json using the Newtonsoft json library.
-Hashes are ommitted from the JSON files, instead these are couputed as the tool converts to BLF.
-The online manifest fime (onmf) is not converted, instead it is rebuilt as it only contains hashes.
-Map variants are not currently supported and are copied as is.
+## What is this tool for?
+The primary objectives of this tool are to enable creation of server files for third-generation halo games (and potentially halo 2 in future).
+This involves converting human readable JSON files to BLFs which the game can understand, and allowing users to import content made in game such as map & game variants, by converting them back to JSON.
+
+The secondary objectives of this tool are around research. This program provides a good foundation for studying unrelated chunks such as saved content like films and screenshots.
+
+## Supported Versions
+12070 - Halo 3 Retail
+11902 - Halo 3 Retail (untested)
+11856 - Halo 3 Epsilon
+11855 - Halo 3 Retail (untested)
+11729 - Halo 3 Epsilon
+10015 - Halo 3 Beta (WIP)
+09699 - Halo 3 Beta (WIP)
+08172 - Halo 3 Delta (WIP)
+06481 - Halo 3 Alpha (WIP)
+
+## What is a BLF?
+BLF is a binary file format used by various halo (blam) games. The BLF format allows you to define blf "chunks", different types of data separated within a file. Each BLF chunk starts with a chunk header, including the 4 character name, length and version of the chunk. Each BLF file starts with a header (_blf) chunk, and ends with an end-of-file (_eof) chunk.
+
+A BLF chunk usualy contains either a game data structure, an example of this is a netc (network configuration) chunk. BLF chunks can also contain bit aligned 'packed' data as well, for example mhcf (matchmaking hopper configuration file). Along with bit alignment, you may also see byteswapped and/or bitswapped data.
 
 ## Chain of Integrity
 Halo 3's title storage files, which are the primary focus of this tool, include a lot of hashes as a means of integrity checking. These are salted SHA-256 hashes, the salt is hardcoded within the blf tool.
