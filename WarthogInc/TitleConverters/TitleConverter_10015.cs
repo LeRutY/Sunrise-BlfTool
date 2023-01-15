@@ -64,7 +64,7 @@ namespace Sunrise.BlfTool.TitleConverters
                     if (fileName == "game_set_006.json")
                         continue; // handle after variants
 
-                    if (fileName == "matchmaking_hopper_011.json")
+                    if (fileName == "matchmaking_hopper_009.json")
                         continue; // Handle after game sets
 
 
@@ -72,7 +72,7 @@ namespace Sunrise.BlfTool.TitleConverters
 
                     Console.WriteLine("Converted file: " + fileRelativePath);
 
-                    if (blfFile.HasChunk<MatchmakingHopperDescriptions3>()
+                    if (blfFile.HasChunk<MatchmakingHopperDescriptions2>()
                         || blfFile.HasChunk<MatchmakingTips>()
                         || blfFile.HasChunk<MapManifest>()
                         || blfFile.HasChunk<MatchmakingBanhammerMessages>())
@@ -140,7 +140,7 @@ namespace Sunrise.BlfTool.TitleConverters
 
                 // And now for the manual ones!
                 // First up, matchmaking playlists.
-                var hopperConfigurationTableBlfFile = BlfFile.FromJSON(File.ReadAllText(jsonFolder + "default_hoppers\\matchmaking_hopper_011.json"), chunkNameMap);
+                var hopperConfigurationTableBlfFile = BlfFile.FromJSON(File.ReadAllText(jsonFolder + "default_hoppers\\matchmaking_hopper_009.json"), chunkNameMap);
                 var mhcf = hopperConfigurationTableBlfFile.GetChunk<HopperConfigurationTable11>();
 
                 //We need to calculate the hash of every gameset.
@@ -150,11 +150,11 @@ namespace Sunrise.BlfTool.TitleConverters
                 }
                 BlfFile hoppersFile = new BlfFile();
                 hoppersFile.AddChunk(mhcf);
-                hoppersFile.WriteFile(blfFolder + "\\default_hoppers\\matchmaking_hopper_011.bin");
+                hoppersFile.WriteFile(blfFolder + "\\default_hoppers\\matchmaking_hopper_009.bin");
 
-                Console.WriteLine("Converted file: default_hoppers\\matchmaking_hopper_011.json");
+                Console.WriteLine("Converted file: default_hoppers\\matchmaking_hopper_009.json");
 
-                fileHashes.Add("/title/default_hoppers/matchmaking_hopper_011.bin", BlfFile.ComputeHash(blfFolder + "\\default_hoppers\\matchmaking_hopper_011.bin"));
+                fileHashes.Add("/title/default_hoppers/matchmaking_hopper_009.bin", BlfFile.ComputeHash(blfFolder + "\\default_hoppers\\matchmaking_hopper_009.bin"));
                 fileHashes.Add("/title/default_hoppers/network_configuration_088.bin", BlfFile.ComputeHash(blfFolder + "\\default_hoppers\\network_configuration_088.bin"));
 
                 Manifest.FileEntry[] fileEntries = new Manifest.FileEntry[fileHashes.Count];
@@ -182,7 +182,7 @@ namespace Sunrise.BlfTool.TitleConverters
             }
         }
 
-        public string GetVersion()
+        public virtual string GetVersion()
         {
             return "10015";
         }
