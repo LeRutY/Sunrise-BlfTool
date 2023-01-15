@@ -17,6 +17,7 @@ This involves converting human readable JSON files to BLFs which the game can un
 The secondary objectives of this tool are around research. This program provides a good foundation for studying unrelated chunks such as saved content like films and screenshots.
 
 ## Supported Versions
+- 12070 - Halo 3 ODST
 - 12070 - Halo 3 Retail
 - 11902 - Halo 3 Retail (untested)
 - 11856 - Halo 3 Epsilon
