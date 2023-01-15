@@ -26,6 +26,9 @@ namespace SunriseBlfTool.BlfChunks
             RegisterTitle<TitleConverter_11729>();
             RegisterTitle<TitleConverter_11856>();
             RegisterTitle<TitleConverter_12070>();
+
+            //ODST
+            RegisterTitle<TitleConverter_13895>();
         }
 
         private void RegisterTitle<T>() where T : ITitleConverter, new()
