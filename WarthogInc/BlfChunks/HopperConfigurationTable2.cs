@@ -64,7 +64,7 @@ namespace Sunrise.BlfTool
             {
                 HopperCategory category = categories[i];
 
-                hoppersStream.Write<ushort>(category.identifier, 16);
+                hoppersStream.WriteBitswapped<ushort>(category.identifier, 16);
                 hoppersStream.WriteBitswappedString(category.name, 32, Encoding.UTF8);
 
                 categories[i] = category;

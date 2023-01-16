@@ -94,11 +94,12 @@ namespace Sunrise.BlfTool
                 hoppersStream.WriteBitswapped<ushort>(configuration.sortKey, 10);
                 hoppersStream.WriteBitswapped<byte>(configuration.imageIndex, 6);
                 hoppersStream.WriteBitswapped<byte>(configuration.xLastIndex, 5);
+                hoppersStream.WriteBitswapped<ushort>(configuration.richPresenceId, 16);
                 hoppersStream.WriteBitswapped<long>((long)configuration.startTime, 64);
                 hoppersStream.WriteBitswapped<long>((long)configuration.endTime, 64);
                 hoppersStream.WriteBitswapped<uint>(configuration.regions, 32);
-                hoppersStream.WriteBitswapped<uint>(configuration.minimumExperienceRank, 4);
-                hoppersStream.WriteBitswapped<uint>(configuration.maximumExperienceRank, 4);
+                hoppersStream.WriteBitswapped<byte>(configuration.minimumExperienceRank, 4);
+                hoppersStream.WriteBitswapped<byte>(configuration.maximumExperienceRank, 4);
                 hoppersStream.WriteBitswapped<byte>(configuration.minimumPartySize, 4);
                 hoppersStream.WriteBitswapped<byte>(configuration.maximumPartySize, 4); //ok
                 hoppersStream.WriteBitswapped<byte>(configuration.hopperAccessBit, 4);
@@ -138,14 +139,14 @@ namespace Sunrise.BlfTool
                 hoppersStream.WriteBitswapped<byte>(configuration.experience_penalty_per_drop, 2);
 
                 for (int l = 0; l < 49; l++)
-                    hoppersStream.WriteFloat(configuration.minimum_mu_per_level[l], 32);
+                    hoppersStream.WriteBitswappedFloat(configuration.minimum_mu_per_level[l], 32);
 
                 for (int m = 0; m < 50; m++)
                     hoppersStream.WriteBitswapped<byte>(configuration.maximum_skill_level_match_delta[m], 6);
 
-                hoppersStream.WriteFloat(configuration.trueskill_sigma_multiplier, 32);
-                hoppersStream.WriteFloat(configuration.trueskill_beta_performance_variation, 32);
-                hoppersStream.WriteFloat(configuration.trueskill_tau_dynamics_factor, 32);
+                hoppersStream.WriteBitswappedFloat(configuration.trueskill_sigma_multiplier, 32);
+                hoppersStream.WriteBitswappedFloat(configuration.trueskill_beta_performance_variation, 32);
+                hoppersStream.WriteBitswappedFloat(configuration.trueskill_tau_dynamics_factor, 32);
                 hoppersStream.WriteBitswapped<byte>(configuration.trueskill_adjust_tau_with_update_weight ? (byte)1 : (byte)0, 1);
                 hoppersStream.WriteBitswapped<byte>(configuration.trueskill_draw_probability, 7);
                 hoppersStream.WriteBitswapped<byte>(configuration.trueskill_hillclimb_w0, 7);
@@ -215,6 +216,7 @@ namespace Sunrise.BlfTool
             public ushort sortKey;
             public byte imageIndex;
             public byte xLastIndex;
+            public ushort richPresenceId;
             public ulong startTime;
             public ulong endTime;
             public uint regions;

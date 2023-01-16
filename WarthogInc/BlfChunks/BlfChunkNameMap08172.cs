@@ -23,7 +23,7 @@ namespace SunriseBlfTool.BlfChunks
             RegisterChunk<UserBanhammer>();
             RegisterChunk<Author>();
             RegisterChunk<ServiceRecordIdentity>();
-            RegisterChunk<GameSet6>();
+            RegisterChunk<GameSet2>();
             RegisterChunk<Manifest>();
             RegisterChunk<MatchmakingTips>();
             RegisterChunk<MatchmakingBanhammerMessages>();
