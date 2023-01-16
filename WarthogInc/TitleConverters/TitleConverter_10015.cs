@@ -11,7 +11,7 @@ namespace Sunrise.BlfTool.TitleConverters
 {
     public class TitleConverter_10015 : ITitleConverter
     {
-        private static readonly AbstractBlfChunkNameMap chunkNameMap = new BlfChunkNameMap12070();
+        private static readonly AbstractBlfChunkNameMap chunkNameMap = new BlfChunkNameMap10015();
         public void ConvertBlfToJson(string blfFolder, string jsonFolder)
         {
             throw new NotImplementedException();
@@ -61,13 +61,6 @@ namespace Sunrise.BlfTool.TitleConverters
 
                     BlfFile blfFile = BlfFile.FromJSON(File.ReadAllText(jsonFileEnumerator.Current), chunkNameMap);
 
-                    if (fileName == "game_set_006.json")
-                        continue; // handle after variants
-
-                    if (fileName == "matchmaking_hopper_009.json")
-                        continue; // Handle after game sets
-
-
                     blfFile.WriteFile(blfFolder + fileRelativePath.Replace(".json", ".bin"));
 
                     Console.WriteLine("Converted file: " + fileRelativePath);
@@ -80,79 +73,6 @@ namespace Sunrise.BlfTool.TitleConverters
                         fileHashes.Add("/title/default_hoppers/" + fileRelativePath.Replace("\\", "/").Replace(".json", ".bin"), BlfFile.ComputeHash(blfFolder + fileRelativePath.Replace(".json", ".bin")));
                     }
                 }
-
-                jsonFileEnumerator = Directory.EnumerateFiles(jsonFolder, "*.*", SearchOption.AllDirectories).GetEnumerator();
-
-                while (jsonFileEnumerator.MoveNext())
-                {
-                    string fileName = jsonFileEnumerator.Current;
-                    if (fileName.Contains("\\"))
-                        fileName = fileName.Substring(fileName.LastIndexOf("\\") + 1);
-
-                    string fileRelativePath = jsonFileEnumerator.Current.Replace(jsonFolder, "");
-                    string fileDirectoryRelativePath = "";
-                    if (fileRelativePath.Contains("\\"))
-                    {
-                        fileDirectoryRelativePath = fileRelativePath.Substring(0, fileRelativePath.LastIndexOf("\\"));
-                        Directory.CreateDirectory(blfFolder + fileDirectoryRelativePath);
-                    }
-
-                    if (fileName.EndsWith(".bin") || fileName.EndsWith(".jpg"))
-                    {
-                        continue;
-                    }
-
-                    BlfFile blfFile = BlfFile.FromJSON(File.ReadAllText(jsonFileEnumerator.Current), chunkNameMap);
-
-                    IBLFChunk blfChunk = null;
-
-                    if (fileName == "game_set_006.json")
-                        blfChunk = blfFile.GetChunk<GameSet6>();
-
-                    if (blfChunk != null)
-                    {
-
-                        foreach (GameSet6.GameEntry entry in (blfChunk as GameSet6).gameEntries)
-                        {
-                            entry.gameVariantHash = BlfFile.ComputeHash(blfFolder + fileDirectoryRelativePath + "\\" + entry.gameVariantFileName + "_010.bin");
-                            entry.mapVariantHash = BlfFile.ComputeHash(blfFolder + fileDirectoryRelativePath + "\\map_variants\\" + entry.mapVariantFileName + "_012.bin");
-
-                            string mapJsonPath = jsonFolder + fileDirectoryRelativePath + "\\map_variants\\" + entry.mapVariantFileName + "_012.json";
-                            try
-                            {
-                                var blfMapFile = BlfFile.FromJSON(File.ReadAllText(mapJsonPath), chunkNameMap);
-                                var map = blfMapFile.GetChunk<PackedMapVariant>();
-                                entry.mapID = map.mapID;
-                            }
-                            catch (FileNotFoundException)
-                            {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("File Not Found: " + mapJsonPath, ConsoleColor.Red);
-                                Console.ResetColor();
-                            }
-                        }
-
-                        blfFile.WriteFile(blfFolder + fileRelativePath.Replace(".json", ".bin"));
-
-                        Console.WriteLine("Converted file: " + fileRelativePath);
-                    }
-                }
-
-                // And now for the manual ones!
-                // First up, matchmaking playlists.
-                var hopperConfigurationTableBlfFile = BlfFile.FromJSON(File.ReadAllText(jsonFolder + "default_hoppers\\matchmaking_hopper_009.json"), chunkNameMap);
-                var mhcf = hopperConfigurationTableBlfFile.GetChunk<HopperConfigurationTable11>();
-
-                //We need to calculate the hash of every gameset.
-                foreach (HopperConfigurationTable11.HopperConfiguration hopperConfiguration in mhcf.configurations)
-                {
-                    hopperConfiguration.gameSetHash = BlfFile.ComputeHash(blfFolder + "\\default_hoppers\\" + hopperConfiguration.identifier.ToString("D5") + "\\game_set_006.bin");
-                }
-                BlfFile hoppersFile = new BlfFile();
-                hoppersFile.AddChunk(mhcf);
-                hoppersFile.WriteFile(blfFolder + "\\default_hoppers\\matchmaking_hopper_009.bin");
-
-                Console.WriteLine("Converted file: default_hoppers\\matchmaking_hopper_009.json");
 
                 fileHashes.Add("/title/default_hoppers/matchmaking_hopper_009.bin", BlfFile.ComputeHash(blfFolder + "\\default_hoppers\\matchmaking_hopper_009.bin"));
                 fileHashes.Add("/title/default_hoppers/network_configuration_088.bin", BlfFile.ComputeHash(blfFolder + "\\default_hoppers\\network_configuration_088.bin"));
