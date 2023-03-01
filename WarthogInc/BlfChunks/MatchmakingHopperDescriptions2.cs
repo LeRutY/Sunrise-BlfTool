@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Sewer56.BitStream;
 using Sewer56.BitStream.ByteStreams;
+using Sunrise.BlfTool.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -41,31 +42,31 @@ namespace Sunrise.BlfTool
 
         public void ReadChunk(ref BitStream<StreamByteStream> hoppersStream)
         {
-            byte descriptionCount = hoppersStream.Read<byte>(6);
-            descriptions = new HopperDescription[descriptionCount];
-
-            for (int i = 0; i < descriptionCount; i++)
-            {
-                HopperDescription description = new HopperDescription();
-                description.identifier = hoppersStream.Read<ushort>(16);
-                description.type = hoppersStream.Read<byte>(1) > 0;
-                description.description = hoppersStream.ReadString(256, Encoding.UTF8);
-                descriptions[i] = description;
-            }
-
-            hoppersStream.Seek(hoppersStream.NextByteIndex, 0);
+            throw new NotImplementedException();
         }
 
-        public void WriteChunk(ref BitStream<StreamByteStream> hoppersStream)
+        public void WriteChunk(ref BitStream<StreamByteStream> stream)
         {
-            hoppersStream.Write<byte>(descriptionCount, 6);
+            var ms = new MemoryStream();
+            var hoppersStream = new BitStream<StreamByteStream>(new StreamByteStream(ms));
+
+            hoppersStream.WriteBitswapped<byte>(descriptionCount, 6);
 
             for (int i = 0; i < descriptionCount; i++)
             {
                 HopperDescription description = descriptions[i];
-                hoppersStream.Write<ushort>(description.identifier, 16);
-                hoppersStream.Write<byte>(description.type ? (byte)1 : (byte)0, 1);
-                hoppersStream.WriteString(description.description, 256, Encoding.UTF8);
+                hoppersStream.WriteBitswapped<ushort>(description.identifier, 16);
+                hoppersStream.WriteBitswapped<byte>(description.type ? (byte)1 : (byte)0, 1);
+                hoppersStream.WriteBitswappedString(description.description, 256, Encoding.UTF8);
+            }
+
+            if (hoppersStream.BitIndex % 8 != 0)
+                hoppersStream.WriteBitswapped((byte)0, 8 - (hoppersStream.BitIndex % 8));
+
+            ms.Seek(0, SeekOrigin.Begin);
+            while (ms.Position < ms.Length)
+            {
+                stream.WriteBitswapped((byte)ms.ReadByte(), 8);
             }
         }
 

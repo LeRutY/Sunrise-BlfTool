@@ -37,7 +37,7 @@ namespace Sunrise.BlfTool
 
         public ushort GetVersion()
         {
-            return 1;
+            return 2;
         }
 
         public void ReadChunk(ref BitStream<StreamByteStream> hoppersStream)
@@ -89,7 +89,6 @@ namespace Sunrise.BlfTool
             public int gameEntryWeight;
             public byte minimumPlayerCount;
             public bool skipAfterVeto;
-            [JsonIgnore]
             public int mapID;
             public string gameVariantFileName;
             public string mapVariantFileName;
