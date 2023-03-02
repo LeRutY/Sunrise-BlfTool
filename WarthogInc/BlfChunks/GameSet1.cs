@@ -66,9 +66,6 @@ namespace Sunrise.BlfTool
             {
                 GameEntry entry = gameEntries[i];
 
-                hoppersStream.WriteBitswapped(entry.gameEntryWeight, 32);
-                hoppersStream.WriteBitswapped(entry.minimumPlayerCount, 4);
-                hoppersStream.WriteBitswapped(entry.skipAfterVeto ? (byte) 1 : (byte) 0, 1);
                 hoppersStream.WriteBitswapped(entry.mapID, 32);
                 hoppersStream.WriteBitswappedString(entry.gameVariantFileName, 32, Encoding.UTF8);
                 hoppersStream.WriteBitswappedString(entry.mapVariantFileName, 32, Encoding.UTF8);
@@ -89,7 +86,6 @@ namespace Sunrise.BlfTool
             public int gameEntryWeight;
             public byte minimumPlayerCount;
             public bool skipAfterVeto;
-            [JsonIgnore]
             public int mapID;
             public string gameVariantFileName;
             public string mapVariantFileName;
