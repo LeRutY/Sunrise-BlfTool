@@ -30,8 +30,7 @@ namespace SunriseBlfTool.BlfChunks
             RegisterChunk<MapManifest>();
             RegisterChunk<MatchmakingHopperStatistics>();
             //RegisterChunk<NetworkConfiguration>();
-            RegisterChunk<PackedGameVariant>();
-            RegisterChunk<PackedMapVariant>();
+            //RegisterChunk<PackedGameVariant5>(); Not implemented, build can generate blfs.
             RegisterChunk<ContentHeader>();
             RegisterChunk<FileQueue>();
             RegisterChunk<UserPlayerData>();

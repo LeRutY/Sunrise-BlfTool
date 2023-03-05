@@ -20,11 +20,9 @@ namespace SunriseBlfTool.BlfChunks
             RegisterChunk<MatchmakingHopperDescriptions1>();
             RegisterChunk<Author>();
             RegisterChunk<GameSet1>();
-            RegisterChunk<MatchmakingTips>();
             RegisterChunk<MatchmakingHopperStatistics>();
             //RegisterChunk<NetworkConfiguration>();
-            RegisterChunk<PackedGameVariant>();
-            RegisterChunk<PackedMapVariant>();
+            RegisterChunk<PackedGameVariant2>();
         }
 
         public override string GetVersion()
